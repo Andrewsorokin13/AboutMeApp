@@ -21,10 +21,6 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Overrides Methods
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
@@ -48,11 +44,13 @@ final class LoginViewController: UIViewController {
         return true
     }
     
+    // MARK: - IB Actions
+    
     @IBAction func unwind(for segue: UIStoryboardSegue) {
         clearTextFields()
     }
     
-    // MARK: - private IB Actions
+    // MARK: - Private IB Actions
     
     @IBAction private func showLoginAndPassword(_ sender: UIButton) {
         showAlert(
@@ -69,8 +67,8 @@ final class LoginViewController: UIViewController {
     }
 }
 
-
 // MARK: - Show alert extension
+
 extension LoginViewController {
     private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
