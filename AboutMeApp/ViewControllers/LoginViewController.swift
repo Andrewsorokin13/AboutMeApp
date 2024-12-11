@@ -16,8 +16,7 @@ final class LoginViewController: UIViewController {
     
     //MARK: Private propperty
     
-    private let userName: String = "admin"
-    private let password: String = "admin102"
+    private let user = User.getUser()
     
     // MARK: - Overrides Methods
     
@@ -27,21 +26,12 @@ final class LoginViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let welcomeViewController = segue.destination as? WelcomeViewController
-        welcomeViewController?.userName = userName
-        clearTextFields()
+        let tabBarController = segue.destination as? TabBarController
+        tabBarController?.user = user
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        guard let user = userNameTextField.text, let userPassword = passwordTextField.text else { return  false }
-        guard userName == user, userPassword == password else {
-            showAlert(title: "Неверный логин или пароль.", message: "Попробуйте еще раз."){
-                self.passwordTextField.text = ""
-                self.userNameTextField.text = ""
-            }
-            return false
-        }
-        return true
+        dataValidation(login: userNameTextField.text, password: passwordTextField.text)
     }
     
     // MARK: - IB Actions
@@ -53,10 +43,9 @@ final class LoginViewController: UIViewController {
     // MARK: - Private IB Actions
     
     @IBAction private func showLoginAndPassword(_ sender: UIButton) {
-        showAlert(
-            title: "Бу, испугался? Не бойся, ниже твой логин и пароль 🌝",
-            message: "Логин: \(userName)\nПароль: \(password)"
-        )
+        sender.tag == 0
+        ? showAlert(title: "Вот твой логин", message: user.login)
+        : showAlert(title: "А вот такой у тебя пароль", message: user.password)
     }
     
     // MARK: - Private Methods
@@ -64,6 +53,16 @@ final class LoginViewController: UIViewController {
     private func clearTextFields() {
         userNameTextField.text = ""
         passwordTextField.text = ""
+    }
+    
+    private func dataValidation(login: String?, password: String?) -> Bool {
+        guard login == user.login, password == user.password else {
+            showAlert(title: "Неверный логин или пароль", message: "Попробуйте снова") {
+                self.passwordTextField.text = ""
+            }
+            return false
+        }
+        return true
     }
 }
 

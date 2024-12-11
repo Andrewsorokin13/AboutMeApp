@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WelcomeViewController: UIViewController {
+final class WelcomeViewController: UIViewController {
     
     // MARK: IB Outlets
     
@@ -15,13 +15,15 @@ class WelcomeViewController: UIViewController {
     
     //MARK: Propperty
     
-    var userName: String?
-
+    var user: User!
+    
     // MARK: - Overrides Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let userName = userName else { return }
-        greetingsLabel.text = "Приветствую, \(userName)!"
+        greetingsLabel.text = """
+            Приветствую, \(user.login)!
+            Меня зовут \(user.person.fullName).
+            """
     }
 }
